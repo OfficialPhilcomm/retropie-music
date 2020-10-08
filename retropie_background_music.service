@@ -1,0 +1,10 @@
+[Unit]
+Description=RetroPie Menu Background Music
+
+[Service]
+User=pi
+ExecStart=/usr/bin/python3 /opt/dev_philcomm/music.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
