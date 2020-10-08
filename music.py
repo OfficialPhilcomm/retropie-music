@@ -164,7 +164,7 @@ while True:
   if emulator_process['id'] != -1:
     emulator_process_id = emulator_process['id']
     emulator_process_name = emulator_process['name']
-    print("Emulator found! Process" + str(emulator_process_name[:-1]) + ". Muting the music...")
+    print("Emulator found! Process" + str(emulator_process_name) + ". Muting the music...")
 
     while current_volume > 0:
       current_volume = current_volume - volumefadespeed
