@@ -131,13 +131,15 @@ def is_emulator_running():
   for pid in pids:
     try:
       process_name = open(os.path.join('/proc',pid,'comm'),'rb').read()
+      process_name_readable = ""
       is_running = False
       for emulator_process_name in emulator_process_names:
         if emulator_process_name in str(process_name[:-1]):
           is_running = True
+          process_name_readable = emulator_process_name
       if is_running:
         emulator_process['id'] = pid
-        emulator_process['name'] = process_name
+        emulator_process['name'] = process_name_readable
         break
     except IOError:
       continue
