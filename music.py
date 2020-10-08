@@ -34,7 +34,7 @@ emulator_process_names = emulatornames = [
   "mame",
   "micropolis",
   "moonlight",
-  "mupen64plus",  
+  "mupen64plus",
   "nds",
   "openbor",
   "openmsx",
@@ -131,8 +131,11 @@ def is_emulator_running():
   for pid in pids:
     try:
       process_name = open(os.path.join('/proc',pid,'comm'),'rb').read()
-      # if "retroarch" in str(process_name[:-1]):
-      if str(process_name[:-1]) in emulator_process_names:
+      is_running = False
+      for emulator_process_name in emulator_process_names:
+        if emulator_process_name in str(process_name[:-1]):
+          is_running = True
+      if is_running:
         emulator_process['id'] = pid
         emulator_process['name'] = process_name
         break
