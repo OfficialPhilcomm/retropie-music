@@ -14,3 +14,5 @@ wget -O $script "$SourcePath/music.py"
 # Download service script
 service=/etc/systemd/system/retropie_background_music.service
 wget -O $service "$SourcePath/retropie_background_music.service"
+sudo systemctl enable retropie_background_music
+sudo systemctl start retropie_background_music
