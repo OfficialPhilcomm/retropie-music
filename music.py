@@ -2,132 +2,193 @@ import os
 import time
 import random
 import datetime
-#import pygame # if you don't have pygame: sudo apt-get install python-pygame
-#also that line is commented out as we import the mixer specifically a bit further down.
+from pygame import mixer
+
+emulator_process_names = emulatornames = [
+  "retroarch",
+  "ags",
+  "uae4all2",
+  "uae4arm",
+  "capricerpi",
+  "linapple",
+  "hatari",
+  "stella",
+  "atari800",
+  "xroar",
+  "vice",
+  "daphne",
+  "reicast",
+  "pifba",
+  "osmose",
+  "gpsp",
+  "jzintv",
+  "basiliskll",
+  "mame",
+  "advmame",
+  "dgen",
+  "openmsx",
+  "mupen64plus",
+  "gngeo",
+  "dosbox",
+  "ppsspp",
+  "simcoupe",
+  "scummvm",
+  "snes9x",
+  "pisnes",
+  "frotz",
+  "fbzx",
+  "fuse",
+  "gemrb",
+  "cgenesis",
+  "zdoom",
+  "eduke32",
+  "lincity",
+  "love",
+  "kodi",
+  "alephone",
+  "micropolis",
+  "openbor",
+  "openttd",
+  "opentyrian",
+  "cannonball",
+  "tyrquake",
+  "ioquake3",
+  "residualvm",
+  "xrick",
+  "sdlpop",
+  "uqm",
+  "stratagus",
+  "wolf4sdl",
+  "solarus",
+  "drastic",
+  "nds",
+  "moonlight",
+  "steamlink.sh",
+  "streaming_clien",
+  "wolf4sdl.sh"]
+
+music_folder = '/home/pi/music/winter' if datetime.date.today().month == 12 else '/home/pi/music'
+max_volume = 0.6
+
+sound_files = [mp3 for mp3 in os.listdir(music_folder) if mp3[-4:] == ".mp3" or mp3[-4:] == ".ogg"]
 
 startdelay = 0
-musicdir = '/home/pi/music'
-maxvolume = 0.6
 volumefadespeed = 0.02
 restart = True
-startsong = ""
 
-d = datetime.date.today()
-if d.month == 12:
-	musicdir = '/home/pi/music/winter'
+last_song_index = -1
+current_song_index = -1
 
-bgm = [mp3 for mp3 in os.listdir(musicdir) if mp3[-4:] == ".mp3" or mp3[-4:] == ".ogg"]
-
-lastsong = -1
-currentsong = -1
-from pygame import mixer
 mixer.init()
 random.seed()
-volume = maxvolume
+current_volume = max_volume
 
-#TODO: Fill in all of the current RetroPie Emulator process names in this list.
-emulatornames = ["retroarch","ags","uae4all2","uae4arm","capricerpi","linapple","hatari","stella","atari800","xroar","vice","daphne","reicast","pifba","osmose","gpsp","jzintv","basiliskll","mame","advmame","dgen","openmsx","mupen64plus","gngeo","dosbox","ppsspp","simcoupe","scummvm","snes9x","pisnes","frotz","fbzx","fuse","gemrb","cgenesis","zdoom","eduke32","lincity","love","kodi","alephone","micropolis","openbor","openttd","opentyrian","cannonball","tyrquake","ioquake3","residualvm","xrick","sdlpop","uqm","stratagus","wolf4sdl","solarus","drastic","nds","moonlight","steamlink.sh","streaming_clien","wolf4sdl.sh"]
+def is_emulationstation_running():
+  running = False
+  pids = [pid for pid in os.listdir('/proc') if pid.isdigit()]
+  for pid in pids:
+    try:
+      procname = open(os.path.join('/proc',pid,'comm'),'rb').read()
+      if "emulationstatio" in str(procname[:-1]):
+        running = True
+    except IOError:
+      continue
+  return running
 
-def esRunning():
-	running = False
-	pids = [pid for pid in os.listdir('/proc') if pid.isdigit()]
-	for pid in pids:
-		try:
-			procname = open(os.path.join('/proc',pid,'comm'),'rb').read()
-			#if procname[:-1] == "emulationstatio":
-			if "emulationstatio" in str(procname[:-1]):
-				running = True
-		except IOError:	
-			continue
-	return running
+while not is_emulationstation_running():
+  time.sleep(1)
 
-esStarted = False
-while not esStarted:
-	time.sleep(1)
-	esStarted = esRunning()
+time.sleep(startdelay)
 
-if startdelay > 0:
-	time.sleep(startdelay)
-	
-pids = [pid for pid in os.listdir('/proc') if pid.isdigit()]
-for pid in pids:
-	try:
-		procname = open(os.path.join('/proc',pid,'comm'),'rb').read()
-		if procname[:-1] == "omxplayer" or procname[:-1] == "omxplayer.bin":
-			while os.path.exists('/proc/'+pid):
-				time.sleep(1)
-	except IOError:	
-		continue
-		
-if not startsong == "":
-	try:
-		currentsong = bgm.index(startsong)
-	except:
-		currentsong = -1
+def wait_for_omx():
+  pids = [pid for pid in os.listdir('/proc') if pid.isdigit()]
+  for pid in pids:
+    try:
+      procname = open(os.path.join('/proc',pid,'comm'),'rb').read()
+      if procname[:-1] == "omxplayer" or procname[:-1] == "omxplayer.bin":
+        while os.path.exists('/proc/'+pid):
+          time.sleep(1)
+    except IOError:
+      continue
+
+wait_for_omx()
+
+def stop_music():
+  if mixer.music.get_busy():
+    mixer.music.stop();
+
+def get_random_song():
+  song = random.randint(0,len(sound_files)-1)
+  while song == last_song_index and len(sound_files) > 1:
+    song = random.randint(0,len(sound_files)-1)
+  return song
+
+def is_emulator_running():
+  emulator_process = dict()
+  emulator_process['id'] = -1;
+  pids = [pid for pid in os.listdir('/proc') if pid.isdigit()]
+
+  for pid in pids:
+    try:
+      process_name = open(os.path.join('/proc',pid,'comm'),'rb').read()
+      if "retroarch" in str(process_name[:-1]):
+        emulator_process['id'] = pid
+        emulator_process['name'] = process_name
+        break
+    except IOError:
+      continue
+
+  return emulator_process
 
 while True:
-	while not esStarted:
-		if mixer.music.get_busy():
-			mixer.music.stop();
-		time.sleep(10)
-		esStarted = esRunning()
-				
-	if os.path.exists('/home/pi/DisableMusic'):
-		print("DisableMusic found!")
-		if mixer.music.get_busy():
-			mixer.music.stop();
-		while (os.path.exists('/home/pi/DisableMusic')):
-			time.sleep(15)
-		print("DisableMusic gone!")
+  while not is_emulationstation_running():
+    stop_music()
+    time.sleep(10)
 
-	if not mixer.music.get_busy():
-		while currentsong == lastsong and len(bgm) > 1:
-			currentsong = random.randint(0,len(bgm)-1)
-		song = os.path.join(musicdir,bgm[currentsong])
-		mixer.music.load(song)
-		lastsong=currentsong
-		mixer.music.set_volume(maxvolume)
-		mixer.music.play()
-		print("BGM Now Playing: " + song)
-	 
-	emulator = -1;
-	esStarted = esRunning()
-	pids = [pid for pid in os.listdir('/proc') if pid.isdigit()]
-	for pid in pids:
-		try:
-			procname = open(os.path.join('/proc',pid,'comm'),'rb').read()
-			#if procname[:-1] in emulatornames:
-			if "retroarch" in str(procname[:-1]):
-				emulator = pid;
-				print("Emulator found! " + str(procname[:-1]) + " Muting the music...")
-				while volume > 0:
-					volume = volume - volumefadespeed
-					if volume < 0:
-						volume=0
-					mixer.music.set_volume(volume);
-					time.sleep(0.05)			
-				if restart:
-					mixer.music.stop()
-				else:
-					mixer.music.pause()
-				print("Muted.  Monitoring emulator.")
-				while os.path.exists("/proc/" + pid):
-					time.sleep(1);
-				print("Emulator finished, resuming audio...")
-				if not restart:
-					mixer.music.unpause()
-					while volume < maxvolume: 
-						volume = volume + volumefadespeed;
-						if volume > maxvolume:
-							volume=maxvolume
-						mixer.music.set_volume(volume);
-						time.sleep(0.05)
-				print("Restored.")
-				volume=maxvolume
+  if not mixer.music.get_busy():
+    current_song_index = get_random_song()
+    song = os.path.join(music_folder,sound_files[current_song_index])
+    mixer.music.load(song)
+    last_song_index = current_song_index
+    mixer.music.set_volume(max_volume)
+    mixer.music.play()
+    print("Now Playing: " + song)
 
-		except IOError:
-			continue
+  emulator_process = is_emulator_running()
+  if emulator_process['id'] != -1:
+    emulator_process_id = emulator_process['id']
+    emulator_process_name = emulator_process['name']
+    print("Emulator found! Process" + str(emulator_process_name[:-1]) + ". Muting the music...")
 
-	time.sleep(1);
-	
-print("An error has occurred that has stopped Test1.py from executing.") #theoretically you should never get this far.
+    while current_volume > 0:
+      current_volume = current_volume - volumefadespeed
+      if current_volume < 0:
+        current_volume = 0
+      mixer.music.set_volume(current_volume);
+      time.sleep(0.05)
+    
+    if restart:
+      mixer.music.stop()
+    else:
+      mixer.music.pause()
+    print("Muted. Monitoring emulator.")
+    
+    while os.path.exists("/proc/" + emulator_process_id):
+      time.sleep(1);
+    print("Emulator finished, resuming audio...")
+    
+    if not restart:
+      mixer.music.unpause()
+      while current_volume < max_volume: 
+        current_volume = current_volume + volumefadespeed;
+        if current_volume > max_volume:
+          current_volume = max_volume
+        mixer.music.set_volume(current_volume);
+        time.sleep(0.05)
+    print("Restored.")
+    
+    current_volume = max_volume
+
+  time.sleep(1);
+
+print("An error has occurred that has stopped music.py from executing.") #theoretically you should never get this far.
