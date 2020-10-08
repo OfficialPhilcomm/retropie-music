@@ -7,6 +7,8 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Download python3 script
+sudo apt-get install python3-pip libsdl-mixer1.2
+sudo pip3 install pygame
 sudo mkdir "/opt/dev_philcomm"
 script=/opt/dev_philcomm/music.py
 wget -O $script "$SourcePath/music.py"
