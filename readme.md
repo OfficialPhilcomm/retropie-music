@@ -17,3 +17,6 @@ If you want some christmas specific music (I know I do), you can create a folder
 Steps:
 1. Press F4 on the keyboard
 2. On the keyboard, enter `wget -O - "https://raw.githubusercontent.com/OfficialPhilcomm/retropie-music/master/uninstall.sh" | sudo bash`
+
+## Credits
+This script is a modified version of the script posted in `https://retropie.org.uk/forum/topic/347/background-music-continued-from-help-support`. I took the freedom of rewriting big parts of it since it wasn't working on newer machines for me.
