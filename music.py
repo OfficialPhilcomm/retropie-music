@@ -155,13 +155,13 @@ while True:
     last_song_index = current_song_index
     mixer.music.set_volume(max_volume)
     mixer.music.play()
-    print("Now Playing: " + song)
+    print(f'Now playing: {song}')
 
   emulator_process = is_emulator_running()
   if emulator_process['id'] != -1:
     emulator_process_id = emulator_process['id']
     emulator_process_name = emulator_process['name']
-    print("Emulator found! Process" + str(emulator_process_name) + ". Muting the music...")
+    print(f'Emulator process called {str(emulator_process_name)} found. Start fading out the music...')
 
     while current_volume > 0:
       current_volume = current_volume - volumefadespeed
@@ -174,11 +174,11 @@ while True:
       mixer.music.stop()
     else:
       mixer.music.pause()
-    print("Muted. Monitoring emulator.")
+    print("Background music muted. Waiting for emulator to stop...")
     
     while os.path.exists("/proc/" + emulator_process_id):
       time.sleep(1);
-    print("Emulator finished, resuming audio...")
+    print("Emulator stopped, start back music")
     
     if not restart:
       mixer.music.unpause()
@@ -194,4 +194,4 @@ while True:
 
   time.sleep(1);
 
-print("An error has occurred that has stopped music.py from executing.") #theoretically you should never get this far.
+print("An error has occurred that has stopped music.py from executing.")
