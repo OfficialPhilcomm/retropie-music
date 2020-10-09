@@ -88,8 +88,8 @@ def is_emulationstation_running():
   pids = [pid for pid in os.listdir('/proc') if pid.isdigit()]
   for pid in pids:
     try:
-      procname = open(os.path.join('/proc',pid,'comm'),'rb').read()
-      if "emulationstatio" in str(procname[:-1]):
+      process_name = open(os.path.join('/proc' ,pid ,'comm'), 'rt').read()[:-1]
+      if "emulationstatio" in str(process_name):
         running = True
     except IOError:
       continue
@@ -104,9 +104,9 @@ def wait_for_omx():
   pids = [pid for pid in os.listdir('/proc') if pid.isdigit()]
   for pid in pids:
     try:
-      procname = open(os.path.join('/proc',pid,'comm'),'rb').read()
-      if procname[:-1] == "omxplayer" or procname[:-1] == "omxplayer.bin":
-        while os.path.exists('/proc/'+pid):
+      process_name = open(os.path.join('/proc', pid, 'comm'), 'rt').read()[:-1]
+      if process_name == "omxplayer" or process_name == "omxplayer.bin":
+        while os.path.exists('/proc/' + pid):
           time.sleep(1)
     except IOError:
       continue
