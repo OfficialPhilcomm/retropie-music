@@ -78,9 +78,11 @@ music_folder = \
 
 max_volume = 0.6
 
-sound_files = [mp3 for mp3 in os.listdir(music_folder) if mp3[-4:] == ".mp3" or mp3[-4:] == ".ogg"]
+sound_files = \
+  [mp3 for mp3 in os.listdir(music_folder) \
+  if mp3.endswith('.mp3') or mp3.endswith('.ogg')]
 
-startdelay = 0
+start_delay = 0
 volumefadespeed = 0.02
 restart = True
 
@@ -97,7 +99,7 @@ def is_emulationstation_running():
   for pid in pids:
     try:
       process_name = open(os.path.join('/proc' ,pid ,'comm'), 'rt').read()[:-1]
-      if "emulationstatio" in str(process_name):
+      if 'emulationstatio' in str(process_name):
         running = True
     except IOError:
       continue
@@ -106,14 +108,14 @@ def is_emulationstation_running():
 while not is_emulationstation_running():
   time.sleep(1)
 
-time.sleep(startdelay)
+time.sleep(start_delay)
 
 def wait_for_omx():
   pids = [pid for pid in os.listdir('/proc') if pid.isdigit()]
   for pid in pids:
     try:
       process_name = open(os.path.join('/proc', pid, 'comm'), 'rt').read()[:-1]
-      if process_name == "omxplayer" or process_name == "omxplayer.bin":
+      if process_name == 'omxplayer' or process_name == 'omxplayer.bin':
         while os.path.exists('/proc/' + pid):
           time.sleep(1)
     except IOError:
@@ -126,9 +128,9 @@ def stop_music():
     mixer.music.stop();
 
 def get_random_song():
-  song = random.randint(0,len(sound_files)-1)
+  song = random.randint(0, len(sound_files) - 1)
   while song == last_song_index and len(sound_files) > 1:
-    song = random.randint(0,len(sound_files)-1)
+    song = random.randint(0, len(sound_files) - 1)
   return song
 
 def is_emulator_running():
@@ -138,7 +140,7 @@ def is_emulator_running():
 
   for pid in pids:
     try:
-      process_name = open(os.path.join('/proc',pid,'comm'),'rt').read()[:-1]
+      process_name = open(os.path.join('/proc', pid, 'comm'), 'rt').read()[:-1]
       is_running = False
       if process_name in emulator_process_names:
         is_running = True
@@ -158,7 +160,7 @@ while True:
 
   if not mixer.music.get_busy():
     current_song_index = get_random_song()
-    song = os.path.join(music_folder,sound_files[current_song_index])
+    song = os.path.join(music_folder, sound_files[current_song_index])
     mixer.music.load(song)
     last_song_index = current_song_index
     mixer.music.set_volume(max_volume)
@@ -182,11 +184,11 @@ while True:
       mixer.music.stop()
     else:
       mixer.music.pause()
-    print("Background music muted. Waiting for emulator to stop...")
+    print('Background music muted. Waiting for emulator to stop...')
     
-    while os.path.exists("/proc/" + emulator_process_id):
+    while os.path.exists('/proc/' + emulator_process_id):
       time.sleep(1);
-    print("Emulator stopped, start back music")
+    print('Emulator stopped, start back music')
     
     if not restart:
       mixer.music.unpause()
@@ -196,10 +198,10 @@ while True:
           current_volume = max_volume
         mixer.music.set_volume(current_volume);
         time.sleep(0.05)
-    print("Restored.")
+    print('Restored.')
     
     current_volume = max_volume
 
   time.sleep(1);
 
-print("An error has occurred that has stopped music.py from executing.")
+print('An error has occurred that has stopped music.py from executing.')
