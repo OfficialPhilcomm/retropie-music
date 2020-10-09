@@ -73,7 +73,7 @@ if not music_folder_exists:
   print('Created /home/pi/music folder')
 winter_folder_exists = os.path.isdir('/home/pi/music/winter')
 music_folder = \
-  '/home/pi/music/winter' if winter_folder_exists && datetime.date.today().month == 12 \
+  '/home/pi/music/winter' if winter_folder_exists and datetime.date.today().month == 12 \
   else '/home/pi/music'
 
 max_volume = 0.6
