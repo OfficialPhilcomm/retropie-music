@@ -16,6 +16,8 @@ If you want some christmas specific music (I know I do), you can create a folder
 ## Config
 The config for the script is located at `/opt/dev_philcomm/config.cfg`. It is created after the first script startup.
 
+Config changes need the script to be restarted. This can be achieved by restarting the console or entering `sudo systemctl restart retropie_background_music`.
+
 ## Uninstall
 Steps:
 1. Press F4 on the keyboard
