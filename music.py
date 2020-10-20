@@ -83,7 +83,7 @@ def create_config():
 
 setup_config()
 
-music_folder = config.get('general', 'music_folder')
+music_folder = config.get('general', 'music_folder') or '/home/pi/music'
 
 music_folder_exists = os.path.isdir(music_folder)
 if not music_folder_exists:
