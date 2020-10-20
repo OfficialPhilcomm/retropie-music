@@ -78,7 +78,8 @@ def setup_config():
 
 def create_config():
   config['general'] = { 'music_folder': '/home/pi/music',
-  'max_volume': '0.6' }
+  'max_volume': '0.6',
+  'volume_fade_speed': '0.02' }
   with open(config_file, 'w') as cfg_file:
     config.write(cfg_file)
 
@@ -102,7 +103,7 @@ sound_files = \
   if mp3.endswith('.mp3') or mp3.endswith('.ogg')]
 
 start_delay = 0
-volumefadespeed = 0.02
+volume_fade_speed = float(config.get('general', 'volume_fade_speed') or 0.02)
 restart = True
 
 last_song_index = -1
@@ -193,7 +194,7 @@ while True:
     print(f'Emulator process called {str(emulator_process_name)} found. Start fading out the music...')
 
     while current_volume > 0:
-      current_volume = current_volume - volumefadespeed
+      current_volume = current_volume - volume_fade_speed
       if current_volume < 0:
         current_volume = 0
       mixer.music.set_volume(current_volume);
@@ -212,7 +213,7 @@ while True:
     if not restart:
       mixer.music.unpause()
       while current_volume < max_volume: 
-        current_volume = current_volume + volumefadespeed;
+        current_volume = current_volume + volume_fade_speed;
         if current_volume > max_volume:
           current_volume = max_volume
         mixer.music.set_volume(current_volume);
