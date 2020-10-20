@@ -70,6 +70,17 @@ emulator_process_names = emulatornames = [
 
 config = configparser.ConfigParser()
 config_file = '/opt/dev_philcomm/config.cfg'
+
+def setup_config():
+  if not os.path.isfile(config_file):
+    create_config()
+  config.read(config_file)
+
+def create_config():
+  config['general'] = { 'music_folder': '/home/pi/music' }
+  with open(config_file, 'w') as cfg_file:
+    config.write(cfg_file)
+
 setup_config()
 
 music_folder = config.get('general', 'music_folder')
@@ -99,16 +110,6 @@ current_song_index = -1
 mixer.init()
 random.seed()
 current_volume = max_volume
-
-def setup_config():
-  if not os.path.isfile(config_file):
-    create_config()
-  config.read(config_file)
-
-def create_config():
-  config['general'] = { 'music_folder': '/home/pi/music' }
-  with open(config_file, 'w') as cfg_file:
-    config.write(cfg_file)
 
 def is_emulationstation_running():
   running = False
