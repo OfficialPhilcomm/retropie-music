@@ -3,6 +3,7 @@ import time
 import random
 import datetime
 from pygame import mixer
+import configparser
 
 emulator_process_names = emulatornames = [
   'advmame',
@@ -67,14 +68,20 @@ emulator_process_names = emulatornames = [
   'xroar',
   'zdoom']
 
-music_folder_exists = os.path.isdir('/home/pi/music')
+config = configparser.ConfigParser()
+config_file = '/opt/dev_philcomm/config.cfg'
+setup_config()
+
+music_folder = config.get('general', 'music_folder')
+
+music_folder_exists = os.path.isdir(music_folder)
 if not music_folder_exists:
-  os.mkdir('/home/pi/music')
-  print('Created /home/pi/music folder')
-winter_folder_exists = os.path.isdir('/home/pi/music/winter')
-music_folder = \
-  '/home/pi/music/winter' if winter_folder_exists and datetime.date.today().month == 12 \
-  else '/home/pi/music'
+  os.mkdir(music_folder)
+  print(f'Created {music_folder} folder as defined in {config_file}')
+
+winter_folder_exists = os.path.isdir(f'{music_folder}/winter')
+if winter_folder_exists and datetime.date.today().month == 12:
+  music_folder = f'{music_folder}/winter'
 
 max_volume = 0.6
 
@@ -92,6 +99,16 @@ current_song_index = -1
 mixer.init()
 random.seed()
 current_volume = max_volume
+
+def setup_config():
+  if not os.path.isfile(config_file):
+    create_config()
+  config.read(config_file)
+
+def create_config():
+  config['general'] = { 'music_folder': '/home/pi/music' }
+  with open(config_file, 'w') as cfg_file:
+    config.write(cfg_file)
 
 def is_emulationstation_running():
   running = False
