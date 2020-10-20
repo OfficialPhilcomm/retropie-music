@@ -77,7 +77,8 @@ def setup_config():
   config.read(config_file)
 
 def create_config():
-  config['general'] = { 'music_folder': '/home/pi/music' }
+  config['general'] = { 'music_folder': '/home/pi/music',
+  'max_volume': '0.6' }
   with open(config_file, 'w') as cfg_file:
     config.write(cfg_file)
 
@@ -94,7 +95,7 @@ winter_folder_exists = os.path.isdir(f'{music_folder}/winter')
 if winter_folder_exists and datetime.date.today().month == 12:
   music_folder = f'{music_folder}/winter'
 
-max_volume = 0.6
+max_volume = float(config.get('general', 'max_volume') or '0.6')
 
 sound_files = \
   [mp3 for mp3 in os.listdir(music_folder) \
