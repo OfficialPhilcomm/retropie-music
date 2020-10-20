@@ -12,5 +12,7 @@ rm $service
 
 # Delete python3 script
 script=/opt/dev_philcomm/music.py
+config=/opt/dev_philcomm/config.cfg
 rm $script
+rm $config
 rmdir /opt/dev_philcomm
