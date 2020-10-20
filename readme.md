@@ -7,11 +7,14 @@ Steps:
 2. On the keyboard, enter `wget -O - "https://raw.githubusercontent.com/OfficialPhilcomm/retropie-music/master/install.sh" | sudo bash`
 
 ## Add music
-To add music, add a samba share to access `/home/pi/music`. Then, just drop `.ogg` or `.mp3` files on it.
+To add music, just drop `.ogg` or `.mp3` files in the music folder. The music folder is defined in the config (see config section), by default it is located at `/home/pi/music`.
 
-If you are using the `retropie-manager` package, you can create a symlink by entering `ln -s /home/pi/music /home/pi/RetroPie/roms/music`. You will then see a new folder on `retropie-manager` called `music`.
+If you are using the `retropie-manager` package, you can create a symlink by entering `ln -s /home/pi/music /home/pi/RetroPie/roms/music`. You will then see a new folder on `retropie-manager` called `music`. If you changed the music folder manually in the config, replace the `/home/pi/music` in the command with your custom folder location.
 
-If you want some christmas specific music (I know I do), you can create a folder called `winter` inside `/home/pi/music`. In December, music will be played from there.
+If you want some christmas specific music (I know I do), you can create a folder called `winter` inside the music folder. In December, music will be played from there.
+
+## Config
+The config for the script is located at `/opt/dev_philcomm/config.cfg`. It is created after the first script startup.
 
 ## Uninstall
 Steps:
