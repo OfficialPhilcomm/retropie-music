@@ -18,6 +18,13 @@ The config for the script is located at `/opt/dev_philcomm/config.cfg`. It is cr
 
 Config changes need the script to be restarted. This can be achieved by restarting the console or entering `sudo systemctl restart retropie_background_music`.
 
+## Logs
+The script generates a log file at `/opt/dev_philcomm/retropie_background_music.log`.
+Logs include:
+- Creation of files and folders that are needed but don't exist
+- Songs that are played
+- Errors that occur that prevent the script from running
+
 ## Uninstall
 Steps:
 1. Press F4 on the keyboard
