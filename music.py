@@ -4,6 +4,14 @@ import random
 import datetime
 from pygame import mixer
 import configparser
+import logging
+
+logging.basicConfig(
+  filename='retropie_background_music.log', 
+  level=logging.DEBUG,
+  format='[%(asctime)s %(levelname)s] %(message)s',
+  datefmt='%Y/%m/%d %I:%M:%S'
+)
 
 emulator_process_names = emulatornames = [
   'advmame',
@@ -82,6 +90,8 @@ def create_config():
   'volume_fade_speed': '0.02' }
   with open(config_file, 'w') as cfg_file:
     config.write(cfg_file)
+  print(f'Created config at {config_file}')
+  logging.info(f'Created config at {config_file}')
 
 setup_config()
 
@@ -91,10 +101,13 @@ music_folder_exists = os.path.isdir(music_folder)
 if not music_folder_exists:
   os.mkdir(music_folder)
   print(f'Created {music_folder} folder as defined in {config_file}')
+  logging.info(f'Created {music_folder} folder as defined in {config_file}')
 
 winter_folder_exists = os.path.isdir(f'{music_folder}/winter')
 if winter_folder_exists and datetime.date.today().month == 12:
   music_folder = f'{music_folder}/winter'
+  print(f'Loaded winter music from {music_folder}/winter')
+  logging.info(f'Loaded winter music from {music_folder}/winter')
 
 max_volume = float(config.get('general', 'max_volume') or '0.6')
 
@@ -186,12 +199,14 @@ while True:
     mixer.music.set_volume(max_volume)
     mixer.music.play()
     print(f'Now playing: {song}')
+    logging.info(f'Now playing: {song}')
 
   emulator_process = is_emulator_running()
   if emulator_process['id'] != -1:
     emulator_process_id = emulator_process['id']
     emulator_process_name = emulator_process['name']
     print(f'Emulator process called {str(emulator_process_name)} found. Start fading out the music...')
+    logging.info(f'Emulator process called {str(emulator_process_name)} found. Start fading out the music...')
 
     while current_volume > 0:
       current_volume = current_volume - volume_fade_speed
@@ -205,10 +220,12 @@ while True:
     else:
       mixer.music.pause()
     print('Background music muted. Waiting for emulator to stop...')
+    logging.info('Background music muted. Waiting for emulator to stop...')
     
     while os.path.exists('/proc/' + emulator_process_id):
       time.sleep(1);
     print('Emulator stopped, start back music')
+    logging.info('Emulator stopped, start back music')
     
     if not restart:
       mixer.music.unpause()
@@ -219,9 +236,11 @@ while True:
         mixer.music.set_volume(current_volume);
         time.sleep(0.05)
     print('Restored.')
+    logging.info('Restored.')
     
     current_volume = max_volume
 
   time.sleep(1);
 
 print('An error has occurred that has stopped music.py from executing.')
+logging.error('An error has occurred that has stopped music.py from executing.')
