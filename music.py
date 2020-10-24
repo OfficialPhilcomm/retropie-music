@@ -84,7 +84,6 @@ while True:
     emulator_process_id = emulator_process['id']
     emulator_process_name = emulator_process['name']
     print(f'Emulator process called {str(emulator_process_name)} found. Start fading out the music...')
-    logging.info(f'Emulator process called {str(emulator_process_name)} found. Start fading out the music...')
 
     while current_volume > 0:
       current_volume = current_volume - volume_fade_speed
@@ -114,7 +113,6 @@ while True:
         mixer.music.set_volume(current_volume);
         time.sleep(0.05)
     print('Restored.')
-    logging.info('Restored.')
     
     current_volume = max_volume
 
