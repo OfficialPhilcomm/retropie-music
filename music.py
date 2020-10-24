@@ -3,8 +3,9 @@ import time
 import random
 import datetime
 from pygame import mixer
-import configparser
 import logging
+import confighelper
+import processhelper
 
 logging.basicConfig(
   filename='retropie_background_music.log', 
@@ -13,95 +14,15 @@ logging.basicConfig(
   datefmt='%Y/%m/%d %I:%M:%S'
 )
 
-emulator_process_names = emulatornames = [
-  'advmame',
-  'ags',
-  'alephone',
-  'atari800',
-  'basiliskll',
-  'cannonball',
-  'capricerpi',
-  'cgenesis',
-  'daphne',
-  'dgen',
-  'dosbox',
-  'drastic',
-  'eduke32',
-  'fbzx',
-  'frotz',
-  'fuse',
-  'gemrb',
-  'gngeo',
-  'gpsp',
-  'hatari',
-  'ioquake3',
-  'jzintv',
-  'kodi',
-  'linapple',
-  'lincity',
-  'love',
-  'mame',
-  'micropolis',
-  'moonlight',
-  'mupen64plus',
-  'nds',
-  'openbor',
-  'openmsx',
-  'openttd',
-  'opentyrian',
-  'osmose',
-  'pifba',
-  'pisnes',
-  'ppsspp',
-  'reicast',
-  'residualvm',
-  'retroarch',
-  'scummvm',
-  'sdlpop',
-  'simcoupe',
-  'snes9x',
-  'solarus',
-  'steamlink.sh',
-  'stella',
-  'stratagus',
-  'streaming_clien',
-  'tyrquake',
-  'uae4all2',
-  'uae4arm',
-  'uqm',
-  'vice',
-  'wolf4sdl',
-  'wolf4sdl.sh',
-  'xrick',
-  'xroar',
-  'zdoom']
+confighelper.setup_config()
 
-config = configparser.ConfigParser()
-config_file = '/opt/dev_philcomm/config.cfg'
-
-def setup_config():
-  if not os.path.isfile(config_file):
-    create_config()
-  config.read(config_file)
-
-def create_config():
-  config['general'] = { 'music_folder': '/home/pi/music',
-  'max_volume': '0.6',
-  'volume_fade_speed': '0.02' }
-  with open(config_file, 'w') as cfg_file:
-    config.write(cfg_file)
-  print(f'Created config at {config_file}')
-  logging.info(f'Created config at {config_file}')
-
-setup_config()
-
-music_folder = config.get('general', 'music_folder') or '/home/pi/music'
+music_folder = confighelper.get_music_folder()
 
 music_folder_exists = os.path.isdir(music_folder)
 if not music_folder_exists:
   os.mkdir(music_folder)
-  print(f'Created {music_folder} folder as defined in {config_file}')
-  logging.info(f'Created {music_folder} folder as defined in {config_file}')
+  print(f'Created {music_folder} folder as defined in {confighelper.config_file}')
+  logging.info(f'Created {music_folder} folder as defined in {confighelper.config_file}')
 
 winter_folder_exists = os.path.isdir(f'{music_folder}/winter')
 if winter_folder_exists and datetime.date.today().month == 12:
@@ -109,14 +30,14 @@ if winter_folder_exists and datetime.date.today().month == 12:
   print(f'Loaded winter music from {music_folder}/winter')
   logging.info(f'Loaded winter music from {music_folder}/winter')
 
-max_volume = float(config.get('general', 'max_volume') or '0.6')
+max_volume = confighelper.get_max_volume()
 
 sound_files = \
   [mp3 for mp3 in os.listdir(music_folder) \
   if mp3.endswith('.mp3') or mp3.endswith('.ogg')]
 
 start_delay = 0
-volume_fade_speed = float(config.get('general', 'volume_fade_speed') or 0.02)
+volume_fade_speed = confighelper.get_volume_fade_speed()
 restart = True
 
 last_song_index = -1
@@ -126,35 +47,12 @@ mixer.init()
 random.seed()
 current_volume = max_volume
 
-def is_emulationstation_running():
-  running = False
-  pids = [pid for pid in os.listdir('/proc') if pid.isdigit()]
-  for pid in pids:
-    try:
-      process_name = open(os.path.join('/proc' ,pid ,'comm'), 'rt').read()[:-1]
-      if 'emulationstatio' in str(process_name):
-        running = True
-    except IOError:
-      continue
-  return running
-
-while not is_emulationstation_running():
+while not processhelper.is_emulationstation_running():
   time.sleep(1)
 
 time.sleep(start_delay)
 
-def wait_for_omx():
-  pids = [pid for pid in os.listdir('/proc') if pid.isdigit()]
-  for pid in pids:
-    try:
-      process_name = open(os.path.join('/proc', pid, 'comm'), 'rt').read()[:-1]
-      if process_name == 'omxplayer' or process_name == 'omxplayer.bin':
-        while os.path.exists('/proc/' + pid):
-          time.sleep(1)
-    except IOError:
-      continue
-
-wait_for_omx()
+processhelper.wait_for_omx()
 
 def stop_music():
   if mixer.music.get_busy():
@@ -166,28 +64,8 @@ def get_random_song():
     song = random.randint(0, len(sound_files) - 1)
   return song
 
-def is_emulator_running():
-  emulator_process = dict()
-  emulator_process['id'] = -1;
-  pids = [pid for pid in os.listdir('/proc') if pid.isdigit()]
-
-  for pid in pids:
-    try:
-      process_name = open(os.path.join('/proc', pid, 'comm'), 'rt').read()[:-1]
-      is_running = False
-      if process_name in emulator_process_names:
-        is_running = True
-      if is_running:
-        emulator_process['id'] = pid
-        emulator_process['name'] = process_name
-        break
-    except IOError:
-      continue
-
-  return emulator_process
-
 while True:
-  while not is_emulationstation_running():
+  while not processhelper.is_emulationstation_running():
     stop_music()
     time.sleep(10)
 
@@ -201,7 +79,7 @@ while True:
     print(f'Now playing: {song}')
     logging.info(f'Now playing: {song}')
 
-  emulator_process = is_emulator_running()
+  emulator_process = processhelper.is_emulator_running()
   if emulator_process['id'] != -1:
     emulator_process_id = emulator_process['id']
     emulator_process_name = emulator_process['name']
