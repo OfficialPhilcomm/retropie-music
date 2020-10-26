@@ -4,8 +4,6 @@ import random
 import datetime
 from pygame import mixer
 import logging
-import sys
-sys.path.append("/opt/dev_philcomm")
 import confighelper
 import processhelper
 

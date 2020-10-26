@@ -11,8 +11,9 @@ sudo apt-get install -y python3-pip libsdl-mixer1.2
 sudo pip3 install pygame
 sudo mkdir "/opt/dev_philcomm"
 sudo chmod 777 "/opt/dev_philcomm"
-script=/opt/dev_philcomm/music.py
-wget -O $script "$SourcePath/music.py"
+wget -O /opt/dev_philcomm/music.py "$SourcePath/music.py"
+wget -O /opt/dev_philcomm/confighelper.py "$SourcePath/confighelper.py"
+wget -O /opt/dev_philcomm/processhelper.py "$SourcePath/processhelper.py"
 
 # Download service script
 service=/etc/systemd/system/retropie_background_music.service
