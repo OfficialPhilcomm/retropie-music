@@ -11,8 +11,8 @@ sudo systemctl stop retropie_background_music
 rm $service
 
 # Delete python3 script
-script=/opt/dev_philcomm/music.py
-config=/opt/dev_philcomm/config.cfg
-rm $script
-rm $config
+rm /opt/dev_philcomm/music.py
+rm /opt/dev_philcomm/confighelper.py
+rm /opt/dev_philcomm/processhelper.py
+rm /opt/dev_philcomm/config.cfg
 rmdir /opt/dev_philcomm
