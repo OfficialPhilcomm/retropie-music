@@ -19,14 +19,10 @@ confighelper.setup_config()
 music_folder = confighelper.get_music_folder()
 
 music_folder_exists = os.path.isdir(music_folder)
-if not music_folder_exists:
-  try:
-    os.mkdir(music_folder)
-    print(f'Created {music_folder} folder as defined in {confighelper.config_file}')
-    logging.info(f'Created {music_folder} folder as defined in {confighelper.config_file}')
-  except FileExistsError:
-    print(f'{music_folder} already exists, proceed')
-    logging.info(f'{music_folder} already exists, proceed')
+
+while not music_folder_exists:
+  time.sleep(1)
+  music_folder_exists = os.path.isdir(music_folder)
 
 winter_folder_exists = os.path.isdir(f'{music_folder}/winter')
 if winter_folder_exists and datetime.date.today().month == 12:
