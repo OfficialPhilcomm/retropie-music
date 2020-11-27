@@ -13,6 +13,9 @@ If you are using the `retropie-manager` package, you can create a symlink by ent
 
 If you want some christmas specific music (I know I do), you can create a folder called `winter` inside the music folder. In December, music will be played from there.
 
+You might experience slowdowns with mp3 files downloaded from YouTube. This is because the sample rate is not correct. You can convert the sample rate to `44100` with a package called `sox`.  
+Use the command `sox file.mp3 -r 44100 out.mp3`. Make sure the output file is not the input file.
+
 ## Config
 The config for the script is located at `/opt/dev_philcomm/config.cfg`. It is created after the first script startup.
 
