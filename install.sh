@@ -7,7 +7,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Download python3 script
-sudo apt-get install -y python3-pip libsdl-mixer1.2
+sudo apt-get install -y python3-pip libsdl2-mixer-2.0-0
 sudo pip3 install pygame
 sudo mkdir "/opt/dev_philcomm"
 sudo chmod 777 "/opt/dev_philcomm"
