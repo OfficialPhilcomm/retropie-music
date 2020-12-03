@@ -8,7 +8,7 @@ fi
 
 # Download python3 script
 sudo apt-get install -y python3-pip libsdl2-mixer-2.0-0
-sudo pip3 install pygame
+sudo pip3 install pygame==2.0.0
 sudo mkdir "/opt/dev_philcomm"
 sudo chmod 777 "/opt/dev_philcomm"
 wget -O /opt/dev_philcomm/music.py "$SourcePath/music.py"
