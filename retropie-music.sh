@@ -43,8 +43,7 @@ function disable_retropie-music() {
 }
 
 function remove_retropie-music() {
-  wget -O - "https://raw.githubusercontent.com/OfficialPhilcomm/retropie-music/master/uninstall.sh"
-  sudo ./uninstall.sh
+  wget -O - "https://raw.githubusercontent.com/OfficialPhilcomm/retropie-music/master/uninstall.sh" | sudo bash
   printMsgs "dialog" "Successfully uninstalled"
 }
 
