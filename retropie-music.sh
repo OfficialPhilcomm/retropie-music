@@ -22,7 +22,7 @@ function depends_retropie-music() {
 }
 
 function sources_retropie-music() {
-  gitPullOrClone "$md_inst" "https://github.com/OfficialPhilcomm/retropie-music.git" retropie
+  gitPullOrClone "$md_inst" "https://github.com/OfficialPhilcomm/retropie-music.git" master
 }
 
 function install_retropie-music() {
