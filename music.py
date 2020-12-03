@@ -43,7 +43,7 @@ restart = True
 last_song_index = -1
 current_song_index = -1
 
-mixer.init()
+mixer.init(frequency=44100, channels=2, buffer=1024)
 random.seed()
 current_volume = max_volume
 
