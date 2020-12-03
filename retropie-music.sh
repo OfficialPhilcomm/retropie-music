@@ -17,7 +17,7 @@ rp_module_section="exp"
 rp_module_flags="noinstclean nobin"
 
 function depends_retropie-music() {
-  local depends=(python3)
+  local depends=(python3-pip libsdl2-mixer-2.0-0)
   getDepends "${depends[@]}"
 }
 
@@ -28,7 +28,8 @@ function sources_retropie-music() {
 function install_retropie-music() {
   cd "$md_inst"
   chown -R $user:$user "$md_inst"
-  sudo ./install.sh
+
+  sudo ./retropie-setup-install.sh
 }
 
 function enable_retropie-music() {
@@ -42,7 +43,9 @@ function disable_retropie-music() {
 }
 
 function remove_retropie-music() {
-  printMsgs "dialog" "todo"
+  wget -O - "https://raw.githubusercontent.com/OfficialPhilcomm/retropie-music/master/uninstall.sh"
+  sudo ./uninstall.sh
+  printMsgs "dialog" "Successfully uninstalled"
 }
 
 function gui_retropie-music() {
