@@ -27,6 +27,7 @@ function sources_retropie-music() {
 function install_retropie-music() {
   cd "$md_inst"
   chown -R $user:$user "$md_inst"
+  chmod -R 755 "$md_inst"
 
   sudo ./install.sh
 }
