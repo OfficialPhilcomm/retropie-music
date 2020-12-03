@@ -27,8 +27,8 @@ while not music_folder_exists:
 winter_folder_exists = os.path.isdir(f'{music_folder}/winter')
 if winter_folder_exists and datetime.date.today().month == 12:
   music_folder = f'{music_folder}/winter'
-  print(f'Loaded winter music from {music_folder}/winter')
-  logging.info(f'Loaded winter music from {music_folder}/winter')
+  print(f'Loaded winter music from {music_folder}')
+  logging.info(f'Loaded winter music from {music_folder}')
 
 max_volume = confighelper.get_max_volume()
 
