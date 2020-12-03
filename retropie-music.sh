@@ -78,11 +78,11 @@ function gui_retropie-music() {
           ;;
 
         3)  
-          enable_retropie-manager
+          enable_retropie-music
           ;;
 
         4)
-          disable_retropie-manager
+          disable_retropie-music
           ;;
       esac
     else
