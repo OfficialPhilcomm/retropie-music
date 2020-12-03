@@ -8,7 +8,7 @@ import confighelper
 import processhelper
 
 logging.basicConfig(
-  filename='/opt/dev_philcomm/retropie_background_music.log', 
+  filename='/opt/dev_philcomm/retropie_music.log', 
   level=logging.DEBUG,
   format='[%(asctime)s %(levelname)s] %(message)s',
   datefmt='%Y/%m/%d %I:%M:%S'
