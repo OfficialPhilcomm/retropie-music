@@ -5,9 +5,9 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Stop and remove service
-service=/etc/systemd/system/retropie_background_music.service
-sudo systemctl disable retropie_background_music
-sudo systemctl stop retropie_background_music
+service=/etc/systemd/system/retropie_music.service
+sudo systemctl disable retropie_music
+sudo systemctl stop retropie_music
 rm $service
 
 # Delete python3 script

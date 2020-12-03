@@ -16,7 +16,7 @@ wget -O /opt/dev_philcomm/confighelper.py "$SourcePath/confighelper.py"
 wget -O /opt/dev_philcomm/processhelper.py "$SourcePath/processhelper.py"
 
 # Download service script
-service=/etc/systemd/system/retropie_background_music.service
-wget -O $service "$SourcePath/retropie_background_music.service"
-sudo systemctl enable retropie_background_music
-sudo systemctl start retropie_background_music
+service=/etc/systemd/system/retropie_music.service
+wget -O $service "$SourcePath/retropie_music.service"
+sudo systemctl enable retropie_music
+sudo systemctl start retropie_music

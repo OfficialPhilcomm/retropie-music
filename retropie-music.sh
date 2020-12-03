@@ -32,12 +32,12 @@ function install_retropie-music() {
 }
 
 function enable_retropie-music() {
-  sudo service enable retropie_background_music
+  sudo service enable retropie_music
   printMsgs "dialog" "RetroPie Music enabled. It will start automatically on next boot"
 }
 
 function disable_retropie-music() {
-  sudo service disable retropie_background_music
+  sudo service disable retropie_music
   printMsgs "dialog" "RetroPie Music disabled. It will no longer start automatically on boot"
 }
 
@@ -69,11 +69,11 @@ function gui_retropie-music() {
     if [[ -n "$choice" ]]; then
       case "$choice" in
         1)
-          sudo service retropie_background_music start
+          sudo service retropie_music start
           ;;
 
         2)
-          sudo service retropie_background_music stop
+          sudo service retropie_music stop
           ;;
 
         3)  

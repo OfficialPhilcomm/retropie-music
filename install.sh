@@ -6,6 +6,6 @@ mv music.py /opt/dev_philcomm/music.py
 mv confighelper.py /opt/dev_philcomm/confighelper.py
 mv processhelper.py /opt/dev_philcomm/processhelper.py
 
-mv retropie_background_music.service /etc/systemd/system/retropie_background_music.service
-sudo systemctl enable retropie_background_music
-sudo systemctl start retropie_background_music
+mv retropie_music.service /etc/systemd/system/retropie_music.service
+sudo systemctl enable retropie_music
+sudo systemctl start retropie_music

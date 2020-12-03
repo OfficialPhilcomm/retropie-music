@@ -22,10 +22,10 @@ Use the command `sox file.mp3 -r 44100 out.mp3`. Make sure the output file is no
 ## Config
 The config for the script is located at `/opt/dev_philcomm/config.cfg`. It is created after the first script startup.
 
-Config changes need the script to be restarted. This can be achieved by restarting the console or entering `sudo systemctl restart retropie_background_music`.
+Config changes need the script to be restarted. This can be achieved by restarting the console or entering `sudo systemctl restart retropie_music`.
 
 ## Logs
-The script generates a log file at `/opt/dev_philcomm/retropie_background_music.log`.
+The script generates a log file at `/opt/dev_philcomm/retropie_music.log`.
 Logs include:
 - Creation of files and folders that are needed but don't exist
 - Songs that are played
