@@ -2,9 +2,12 @@
 Make sure that an internet connection is established and that a keyboard is connected!
 
 ## Install
+### With RetroPie Setup
+You can find this package under the experimental section in the RetroPie Setup Package section
+### Manual
 Steps:
 1. Press F4 on the keyboard
-2. On the keyboard, enter `wget -O - "https://raw.githubusercontent.com/OfficialPhilcomm/retropie-music/master/install.sh" | sudo bash`
+2. On the keyboard, enter `wget -O - "https://raw.githubusercontent.com/OfficialPhilcomm/retropie-music/master/manual_install.sh" | sudo bash`
 
 ## Add music
 To add music, just drop `.ogg` or `.mp3` files in the music folder. The music folder is defined in the config (see config section), by default it is located at `/home/pi/music`.
@@ -29,9 +32,12 @@ Logs include:
 - Errors that occur that prevent the script from running
 
 ## Uninstall
+### With RetroPie Setup
+You can use the RetroPie Setup package section to uninstall the script. It is in the experimental section.
+### Manual
 Steps:
 1. Press F4 on the keyboard
-2. On the keyboard, enter `wget -O - "https://raw.githubusercontent.com/OfficialPhilcomm/retropie-music/master/uninstall.sh" | sudo bash`
+2. On the keyboard, enter `wget -O - "https://raw.githubusercontent.com/OfficialPhilcomm/retropie-music/master/manual_uninstall.sh" | sudo bash`
 
 ## Credits
 This script is a modified version of the script posted in `https://retropie.org.uk/forum/topic/347/background-music-continued-from-help-support`. I took the freedom of rewriting big parts of it since it wasn't working on newer machines for me.

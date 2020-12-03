@@ -11,8 +11,7 @@
 
 rp_module_id="retropie-music"
 rp_module_desc="RetroPie Menu Background Music"
-rp_module_help="placeholder"
-rp_module_licence="placeholder"
+rp_module_help="This script enables you to play menu background music on RetroPie!"
 rp_module_section="exp"
 rp_module_flags="noinstclean nobin"
 
@@ -29,22 +28,27 @@ function install_retropie-music() {
   cd "$md_inst"
   chown -R $user:$user "$md_inst"
 
-  sudo ./retropie-setup-install.sh
+  sudo ./install.sh
 }
 
 function enable_retropie-music() {
   sudo service enable retropie_background_music
-  printMsgs "dialog" "retropie-music enabled. It will start automatically on next boot"
+  printMsgs "dialog" "RetroPie Music enabled. It will start automatically on next boot"
 }
 
 function disable_retropie-music() {
   sudo service disable retropie_background_music
-  printMsgs "dialog" "retropie-music disabled. It will no longer start automatically on boot"
+  printMsgs "dialog" "RetroPie Music disabled. It will no longer start automatically on boot"
 }
 
 function remove_retropie-music() {
-  wget -O - "https://raw.githubusercontent.com/OfficialPhilcomm/retropie-music/master/uninstall.sh" | sudo bash
+  cd "$md_inst"
+
+  sudo ./uninstall.sh
   printMsgs "dialog" "Successfully uninstalled"
+
+  cd ..
+  rm -R "$md_inst"
 }
 
 function gui_retropie-music() {
@@ -59,7 +63,7 @@ function gui_retropie-music() {
   local error_msg
   
   while true; do
-    cmd=(dialog --backtitle "$__backtitle" --menu "\n\nChoose an option." 22 86 16)
+    cmd=(dialog --backtitle "$__backtitle" --menu "What do you wanna do?" 22 86 16)
     choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
     
     if [[ -n "$choice" ]]; then
