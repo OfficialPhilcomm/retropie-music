@@ -24,17 +24,31 @@ while not music_folder_exists:
   time.sleep(1)
   music_folder_exists = os.path.isdir(music_folder)
 
-winter_folder_exists = os.path.isdir(f'{music_folder}/winter')
-if winter_folder_exists and datetime.date.today().month == 12:
-  music_folder = f'{music_folder}/winter'
-  print(f'Loaded winter music from {music_folder}')
-  logging.info(f'Loaded winter music from {music_folder}')
-
 max_volume = confighelper.get_max_volume()
 
-sound_files = \
-  [mp3 for mp3 in os.listdir(music_folder) \
-  if mp3.endswith('.mp3') or mp3.endswith('.ogg')]
+winter_folder_exists = os.path.isdir(f'{music_folder}/winter')
+
+def get_sound_files():
+  songs = []
+
+  if winter_folder_exists and datetime.date.today().month == 12:
+    for entry in os.scandir(f'{music_folder}/winter'):
+      if entry.is_file and entry.path.endswith((".mp3", ".ogg")):
+        songs.append(entry.path)
+    print(f'Loaded winter music from {music_folder}')
+    logging.info(f'Loaded winter music from {music_folder}')
+  else:
+    for entry in os.scandir(music_folder):
+      if entry.is_file() and entry.path.endswith((".mp3", ".ogg")):
+        songs.append(entry.path)
+      if entry.is_dir() and entry.name != "winter":
+        for entry2 in os.scandir(entry.path):
+          if entry2.is_file() and entry2.path.endswith((".mp3", ".ogg")):
+            songs.append(entry2.path)
+
+  return songs
+
+sound_files = get_sound_files()
 
 start_delay = 0
 volume_fade_speed = confighelper.get_volume_fade_speed()
@@ -71,7 +85,7 @@ while True:
 
   if not mixer.music.get_busy():
     current_song_index = get_random_song()
-    song = os.path.join(music_folder, sound_files[current_song_index])
+    song = sound_files[current_song_index]
     mixer.music.load(song)
     last_song_index = current_song_index
     mixer.music.set_volume(max_volume)
