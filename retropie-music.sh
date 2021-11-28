@@ -12,23 +12,27 @@
 rp_module_id="retropie-music"
 rp_module_desc="RetroPie Menu Background Music"
 rp_module_help="This script enables you to play menu background music on RetroPie!"
-rp_module_section="exp"
+rp_module_section="opt"
 rp_module_flags="noinstclean nobin"
+rp_module_repo="git https://github.com/OfficialPhilcomm/retropie-music.git master"
 
 function depends_retropie-music() {
-  local depends=(python3-pip libsdl2-mixer-2.0-0)
-  getDepends "${depends[@]}"
+  getDepends python3-pip libsdl2-mixer-2.0-0
 }
 
 function sources_retropie-music() {
-  gitPullOrClone "$md_inst" "https://github.com/OfficialPhilcomm/retropie-music.git" master
+  gitPullOrClone "$md_inst"
 }
 
 function install_retropie-music() {
   cd "$md_inst"
   chown -R $user:$user "$md_inst"
 
-  sudo ./install.sh
+  sudo pip3 install pygame==2.0.0
+
+  sudo cp retropie_music.service /etc/systemd/system/retropie_music.service
+  sudo systemctl enable retropie_music
+  sudo systemctl start retropie_music
 }
 
 function enable_retropie-music() {
@@ -44,11 +48,11 @@ function disable_retropie-music() {
 function remove_retropie-music() {
   cd "$md_inst"
 
-  sudo ./uninstall.sh
-  printMsgs "dialog" "Successfully uninstalled"
+  sudo systemctl stop retropie_music
+  sudo systemctl disable retropie_music
+  rm /etc/systemd/system/retropie_music.service
 
-  cd ..
-  rm -R "$md_inst"
+  printMsgs "dialog" "Successfully uninstalled"
 }
 
 function gui_retropie-music() {
