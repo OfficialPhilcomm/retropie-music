@@ -20,7 +20,7 @@ def setup_config():
   config.read(config_file)
 
 def create_config():
-  config['general'] = { 'music_folder': '/home/pi/music',
+  config['general'] = { 'music_folder': '/home/pi/RetroPie/roms/music',
   'max_volume': '0.6',
   'volume_fade_speed': '0.02' }
   with open(config_file, 'w') as cfg_file:
@@ -29,7 +29,7 @@ def create_config():
   logging.info(f'Created config at {config_file}')
 
 def get_music_folder():
-  return config.get('general', 'music_folder') or '/home/pi/music'
+  return config.get('general', 'music_folder') or '/home/pi/RetroPie/roms/music'
 
 def get_max_volume():
   return float(config.get('general', 'max_volume') or '0.6')
