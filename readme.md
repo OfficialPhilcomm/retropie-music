@@ -27,7 +27,7 @@ Config changes need the script to be restarted. This can be achieved by restarti
 
 ## Logs
 
-The script generates a log file at `/opt/dev_philcomm/retropie_music.log`.
+The script generates a log file at `/opt/retropie/supplementary/retropie-music/retropie_music.log`.
 Logs include:
 
 - Creation of files and folders that are needed but don't exist

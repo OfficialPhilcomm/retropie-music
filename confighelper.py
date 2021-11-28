@@ -2,11 +2,13 @@ import os
 import configparser
 import logging
 
+dirname = os.path.dirname(__file__)
+
 config = configparser.ConfigParser()
-config_file = '/opt/dev_philcomm/config.cfg'
+config_file = os.path.join(dirname, 'config.cfg')
 
 logging.basicConfig(
-  filename='/opt/dev_philcomm/retropie_music.log', 
+  filename=os.path.join(dirname, 'retropie_music.log'), 
   level=logging.DEBUG,
   format='[%(asctime)s %(levelname)s] %(message)s',
   datefmt='%Y/%m/%d %I:%M:%S'

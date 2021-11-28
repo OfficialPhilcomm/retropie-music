@@ -3,8 +3,8 @@ Description=RetroPie Menu Background Music
 
 [Service]
 User=pi
-WorkingDirectory=/opt/dev_philcomm
-ExecStart=/usr/bin/python3 /opt/dev_philcomm/music.py
+WorkingDirectory=/opt/retropie/supplementary/retropie-music
+ExecStart=/usr/bin/python3 /opt/retropie/supplementary/retropie-music/music.py
 Restart=always
 
 [Install]
