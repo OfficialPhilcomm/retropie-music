@@ -4,7 +4,11 @@ Make sure that an internet connection is established and that a keyboard is conn
 
 ## Install
 
-To install the package, simply run `wget -P /home/pi/RetroPie-Setup/ext/dev_philcomm/scriptmodules/supplementary/ "https://raw.githubusercontent.com/OfficialPhilcomm/retropie-music/master/retropie-music.sh"` from the console. This will make the package appear in RetroPie Setup in optional packages. From there, you can install, uninstall and update the package.
+To install the package, simply run this command from the console. This will make the package appear in RetroPie Setup in optional packages. From there, you can install, uninstall and update the package.
+
+```
+wget -P /home/pi/RetroPie-Setup/ext/dev_philcomm/scriptmodules/supplementary/ "https://raw.githubusercontent.com/OfficialPhilcomm/retropie-music/master/retropie-music.sh"
+```
 
 ## Add music
 
