@@ -16,6 +16,10 @@ To add music, just drop `.mp3`, `.ogg` or `.flac` files in the music folder. The
 
 If you want some christmas specific music (I know I do), you can create a folder called `winter` inside the music folder. In December, music will be played exclusively from there.
 
+You might experience slowdowns with mp3 files downloaded from YouTube. This is because the sample rate is not correct. This is something that is being looked into, but there is no straight forward solution to this.
+
+You can convert the sample rate to `44100` with a package called `sox`. Use the command `sox file.mp3 -r 44100 out.mp3`. Make sure the output file is not the input file.
+
 ## Config
 
 The config for the script is located at `/opt/retropie/config.yml`. It is created after the first script startup.
