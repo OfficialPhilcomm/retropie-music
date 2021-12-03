@@ -22,7 +22,7 @@ You can convert the sample rate to `44100` with a package called `sox`. Use the 
 
 ## Config
 
-The config for the script is located at `/opt/retropie/config.yml`. It is created after the first script startup.
+The config for the script is located at `/opt/retropie/supplementary/retropie-music/config.yml`. It is created after the first script startup.
 
 Config changes need the script to be restarted. This can be achieved by restarting the console or entering `sudo systemctl restart retropie_music`.
 
