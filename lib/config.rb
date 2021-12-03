@@ -20,7 +20,7 @@ class Config
   end
 
   def fade_speed
-    @config["fade_speed"]
+    @config["fade_speed"].to_f * 1000
   end
 
   private
