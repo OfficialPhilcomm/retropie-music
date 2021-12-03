@@ -15,6 +15,7 @@ rp_module_help="This script enables you to play menu background music on RetroPi
 rp_module_section="opt"
 rp_module_flags="noinstclean nobin"
 rp_module_repo="git https://github.com/OfficialPhilcomm/retropie-music.git master"
+rp_module_licence="MIT https://raw.githubusercontent.com/OfficialPhilcomm/retropie-music/master/LICENSE.md"
 
 function depends_retropie-music() {
   getDepends ruby ruby-dev libsdl2-2.0-0 libsdl2-dev libsdl2-mixer-2.0-0 libsdl2-mixer-dev
