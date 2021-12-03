@@ -1,4 +1,3 @@
-__pycache__/
-config.cfg
+config.yml
 retropie.pkg
-retropie_music.log
+Gemfile.lock

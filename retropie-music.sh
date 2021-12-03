@@ -17,7 +17,7 @@ rp_module_flags="noinstclean nobin"
 rp_module_repo="git https://github.com/OfficialPhilcomm/retropie-music.git master"
 
 function depends_retropie-music() {
-  getDepends python3-pip libsdl2-mixer-2.0-0
+  getDepends ruby ruby-dev libsdl2-2.0-0 libsdl2-dev libsdl2-mixer-2.0-0 libsdl2-mixer-dev
 }
 
 function sources_retropie-music() {
@@ -28,7 +28,8 @@ function install_retropie-music() {
   cd "$md_inst"
   chown -R $user:$user "$md_inst"
 
-  sudo pip3 install pygame==2.0.0
+  sudo gem install bundler --conservative
+  bundle install
 
   sudo cp retropie_music.service /etc/systemd/system/retropie_music.service
   sudo systemctl enable retropie_music

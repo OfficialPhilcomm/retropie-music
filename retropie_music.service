@@ -4,7 +4,7 @@ Description=RetroPie Menu Background Music
 [Service]
 User=pi
 WorkingDirectory=/opt/retropie/supplementary/retropie-music
-ExecStart=/usr/bin/python3 /opt/retropie/supplementary/retropie-music/music.py
+ExecStart=/usr/bin/ruby /opt/retropie/supplementary/retropie-music/music.rb
 Restart=always
 
 [Install]
