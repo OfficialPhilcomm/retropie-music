@@ -30,7 +30,8 @@ Config changes need the script to be restarted. This can be achieved by restarti
 This is the location of the music folder. By default, it's set to `/home/pi/RetroPie/roms/music` to be accessible via the roms samba share.
 
 ### `max_volume`
-Currently not used, but this will in the future allow for a maximum music volume, in case you just want some quiet background music.
+This sets the maximum volume for the music script. Allowed are values between `0` and `128`.  
+Note: This is a non linear value, 64 is nearly the same as 128. I don't have much influence on this.
 
 ### `fade_speed`
 This value is used for music fading, for example when an emulator is started. It is set in seconds (`1.5` = 1.5 seconds)

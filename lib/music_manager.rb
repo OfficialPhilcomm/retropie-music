@@ -15,6 +15,8 @@ class MusicManager
         !file.start_with? "#{@music_folder}/winter/"
       end
     end
+
+    SDL2::Mixer::MusicChannel.volume = Config.instance.max_volume
   end
 
   def start_playing(fade_in = false)

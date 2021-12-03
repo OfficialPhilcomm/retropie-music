@@ -15,6 +15,10 @@ class Config
     @config["music_folder"]
   end
 
+  def max_volume
+    [0, 128, @config["max_volume"].to_i].sort[1]
+  end
+
   def fade_speed
     @config["fade_speed"]
   end
@@ -30,7 +34,7 @@ class Config
   def default_config
     config = {}
     config["music_folder"] = "/home/pi/RetroPie/roms/music"
-    config["max_volume"] = 0.6
+    config["max_volume"] = 128
     config["fade_speed"] = 1.5
 
     config
