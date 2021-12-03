@@ -1,7 +1,7 @@
 SDL2::init(SDL2::INIT_AUDIO)
 
 SDL2::Mixer.init(SDL2::Mixer::INIT_FLAC|SDL2::Mixer::INIT_MP3|SDL2::Mixer::INIT_OGG)
-SDL2::Mixer.open(44100, SDL2::Mixer::DEFAULT_FORMAT, 2, 512)
+SDL2::Mixer.open(44100, SDL2::Mixer::DEFAULT_FORMAT, 2, 1024)
 
 class MusicManager
   def initialize
