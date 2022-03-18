@@ -1,5 +1,6 @@
 [Unit]
 Description=RetroPie Menu Background Music
+After=multi-user.target
 
 [Service]
 User=pi
